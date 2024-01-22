@@ -6,23 +6,30 @@ function deleteCard(card) {
 	card.remove()
 }
 
-function addCard(cardTitle, imageUrl, deleteCard) {
+function createCard(item, deleteCard) {
 	const cardTemplate = document.getElementById('card-template').content;
 	const cardElement = cardTemplate.querySelector('.card').cloneNode(true)
 	const deleteButton = cardElement.querySelector('.card__delete-button')
-	cardElement.querySelector('.card__image').src = imageUrl
-	cardElement.querySelector('.card__title').textContent = cardTitle
-	placesList.append(cardElement)
+	const cardImage = cardElement.querySelector('.card__image')
+	cardImage.src = item.link
+	cardImage.alt = item.name
+	cardElement.querySelector('.card__title').textContent = item.name
 	cardElement.querySelector('.card__like-button').addEventListener('click', function(evt){
 		evt.target.classList.toggle('card__like-button_is-active')
 	})
-	const removeButtonClick = evt => {
-		const cardItem = evt.target.closest('.card')
-		deleteCard(cardItem)
+	const removeButtonClick = () => {
+		deleteCard(cardElement)
 	}
 	deleteButton.addEventListener('click', removeButtonClick)
+
+	return cardElement
 }
 
-for (let i = 0; i < initialCards.length; i ++) {
-	addCard(initialCards[i].name, initialCards[i].link, deleteCard)
+function addCard(item, deleteCard) {
+  const cardElement = createCard(item, deleteCard);
+  placesList.append(cardElement);
 }
+
+initialCards.forEach(item => {
+	addCard(item, deleteCard)
+});
