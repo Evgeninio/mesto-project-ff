@@ -1,7 +1,5 @@
 export function closePopup (openedPopup) {
-	setTimeout(() => {
-		openedPopup.classList.remove('popup_is-opened')
-	}, 1)
+	openedPopup.classList.remove('popup_is-opened')
 	window.removeEventListener('keydown', escapeHandler)	
 }
 

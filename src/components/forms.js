@@ -4,28 +4,33 @@ import {
 	placeNameInput, 
 	placeUrlInput, 
 	profileTitle, 
-	profileDesc} from './constants';
-import {
-	addCard, 
+	profileDesc,
+	newCardPopup,
+	profileEditPopup,
+	cardForm} from './constants';
+import { 
 	deleteCard, 
-	likeCard, 
-	openCard } from './card';
+	likeCard} from './card';
+import { closePopup } from './modal.js';
+import { openCard } from '../index.js';
+import { addCard } from '../index.js'
 
 export function handleFormSubmit(evt) {
 	evt.preventDefault();
-	let jobValue = jobInput.value
-	let nameValue = nameInput.value							
+	const jobValue = jobInput.value
+	const nameValue = nameInput.value							
   
 	profileTitle.textContent = nameValue
 	profileDesc.textContent = jobValue
-	
+	closePopup(profileEditPopup)
 }
 
 export function handleFormCreate(evt) {
 	evt.preventDefault();
-	let placeNameValue = placeNameInput.value
-	let placeUrlValue = placeUrlInput.value							
+	const placeNameValue = placeNameInput.value
+	const placeUrlValue = placeUrlInput.value							
   
 	addCard({name: placeNameValue, link: placeUrlValue}, deleteCard, likeCard, openCard)
-	
+	closePopup(newCardPopup)
+	cardForm.reset()
 }
