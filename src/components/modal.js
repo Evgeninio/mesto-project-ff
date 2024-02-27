@@ -4,10 +4,7 @@ export function closePopup (openedPopup) {
 }
 
 export function openPopup (popup) {
-	popup.classList.add('popup_is-animated')
-	setTimeout(() => {
-		popup.classList.add('popup_is-opened')
-	}, 1)
+	popup.classList.add('popup_is-opened')
 	window.addEventListener('keydown', escapeHandler)
 }
 

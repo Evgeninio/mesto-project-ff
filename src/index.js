@@ -9,7 +9,6 @@ import {
 	closeButton, 
 	formElement, 
 	cardForm, 
-	saveButtons, 
 	allPopups,
 	formName,
 	formDesc,
@@ -20,7 +19,7 @@ import {
 	profileDesc,
 	imagePopup,
 	imageTitlePopup,
-	imagePopupContainer} from './components/constants.js';
+	newCardPopup} from './components/constants.js';
 import { 
 	handleFormCreate, 
 	handleFormSubmit} from './components/forms.js';
@@ -46,7 +45,6 @@ initialCards.forEach(item => {
 });
 
 newCardButton.addEventListener('click', function(){
-	const newCardPopup = document.querySelector('.popup_type_new-card')
 	openPopup(newCardPopup)
 })
 
@@ -68,3 +66,4 @@ allPopups.forEach(popup => popup.addEventListener('click', (evt) => {
     closePopup(popup)
   }
 }))
+allPopups.forEach(popup => popup.classList.add('popup_is-animated'))

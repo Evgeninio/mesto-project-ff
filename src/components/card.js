@@ -1,6 +1,5 @@
 import { 
 	imagePopupContainer} from './constants';
-import { openCard } from '../index.js';
 
 export function createCard(item, deleteCard, likeCard, openCard) {
 	const cardTemplate = document.getElementById('card-template').content;
