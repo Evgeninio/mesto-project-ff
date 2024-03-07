@@ -1,8 +1,6 @@
 import './pages/index.css';
-import {initialCards} from './components/cards.js';
 import { 
 	deleteCard, 
-	likeCard, 
 	createCard} from './components/card.js';
 import {
 	newCardButton, 
@@ -19,7 +17,13 @@ import {
 	profileDesc,
 	imagePopup,
 	imageTitlePopup,
-	newCardPopup} from './components/constants.js';
+	newCardPopup,
+	validationConfig,
+	avatarForm,
+	avatarLinkInput,
+	avatarPopup,
+	profileAvatar,
+	newAvatarButton} from './components/constants.js';
 import { 
 	handleFormCreate, 
 	handleFormSubmit} from './components/forms.js';
@@ -28,8 +32,12 @@ import {
 	openPopup, 
 	closePopup } from './components/modal.js';
 
-export function addCard(item, deleteCard, likeCard, openCard) {
-	const cardElement = createCard(item, deleteCard, likeCard, openCard)
+import {clearValidation, enableValidation} from './components/validation.js';
+
+import { serverCards, getProfile, updateAvatar } from './components/api.js';
+
+export function addCard(item, deleteCard, openCard, userId) {
+	const cardElement = createCard(item, deleteCard,  openCard, userId)
 	placesList.prepend(cardElement)
 }
 	
@@ -40,15 +48,15 @@ export function openCard (imageCont, card) {
 	openPopup(imageCont)
 }
 
-initialCards.forEach(item => {
-	addCard(item, deleteCard, likeCard, openCard)
-});
+
 
 newCardButton.addEventListener('click', function(){
+	clearValidation(newCardPopup, validationConfig)
 	openPopup(newCardPopup)
 })
 
 editButton.addEventListener('click', function(){
+	clearValidation(popupEdit, validationConfig)
 	formName.value = profileTitle.textContent
 	formDesc.value = profileDesc.textContent
 	openPopup(popupEdit)
@@ -67,3 +75,34 @@ allPopups.forEach(popup => popup.addEventListener('click', (evt) => {
   }
 }))
 allPopups.forEach(popup => popup.classList.add('popup_is-animated'))
+
+
+enableValidation(validationConfig)
+
+Promise.all([serverCards(), getProfile()])
+.then(([cards, profile]) => {
+	cards.forEach(item => {
+		const card = createCard(item, deleteCard, openCard, profile._id)
+		placesList.append(card)
+	})
+	profileTitle.textContent = profile.name
+	profileDesc.textContent = profile.about
+	profileAvatar.style.backgroundImage = `url('${profile.avatar}')`
+	setupAvatarChange()
+})
+
+function setupAvatarChange() {
+  profileAvatar.addEventListener('click', () => {
+    openPopup(avatarPopup);
+  });
+  avatarForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+			newAvatarButton.textContent = 'Сохранение...'
+      updateAvatar(avatarLinkInput.value)
+          .then((res) => {
+            profileAvatar.style.backgroundImage = `url('${res.avatar}')`
+            closePopup(avatarPopup)
+						newAvatarButton.textContent = 'Сохранить'
+          })
+	})
+}

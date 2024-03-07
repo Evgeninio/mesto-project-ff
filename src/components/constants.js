@@ -23,3 +23,18 @@ export const imagePopup = document.querySelector('.popup__image')
 export const imageTitlePopup = document.querySelector('.popup__caption')
 export const profileEditPopup = document.querySelector('.popup_type_edit')
 export const newCardPopup = document.querySelector('.popup_type_new-card')
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button-disabled',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active'
+}
+export const profileAvatar = document.querySelector('.profile__avatar');
+export const avatarForm = document.forms['new-avatar'];
+export const avatarPopup = document.querySelector('.popup_type_new-avatar');
+export const avatarLinkInput = document.querySelector('.popup__input_type_url_avatar')
+export const newPlaceButton = document.getElementById('new-card')
+export const editProfileButton = document.getElementById('edit-profile')
+export const newAvatarButton = document.getElementById('new-avatar')
