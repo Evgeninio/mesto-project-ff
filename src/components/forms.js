@@ -19,7 +19,7 @@ import {
 	avatarLinkInput,
 	avatarPopup} from './constants'
 import { closePopup } from './modal.js'
-import { clearValidation } from './validation.js'
+import { clearValidation, toggleButtonState  } from './validation.js'
 
 export function handleProfileFormSubmit(evt) {
 	evt.preventDefault()
@@ -30,14 +30,13 @@ export function handleProfileFormSubmit(evt) {
 	.then(() => {
 		profileTitle.textContent = nameValue
 		profileDesc.textContent = jobValue
+		closePopup(profileEditPopup)
 	})
 	.catch(err => {
 		console.log(err)
 	})
 	.finally(() => {
-		clearValidation(profileEditPopup, validationConfig)
 		editProfileButton.textContent = 'Сохранить'
-		closePopup(profileEditPopup)
 	})
 }
 
@@ -49,15 +48,13 @@ export function handleFormCreate(evt) {
 	createCardApi(placeNameValue, placeUrlValue)
 		.then(res => {
 			addCard(res, deleteCard, openCard, res.owner._id)
-			console.log(cardForm)
+			closePopup(newCardPopup)
 		})
 		.catch(err => {
 			console.log(err)
 		})
 		.finally(() => {
-			clearValidation(newCardPopup, validationConfig)
 			newPlaceButton.textContent = 'Сохранить'
-			closePopup(newCardPopup)
 		})
 }
 
@@ -68,13 +65,12 @@ export function handleAvatarEdit(evt) {
 		updateAvatar(avatarLinkInput.value)
 			.then(res => {
 				profileAvatar.style.backgroundImage = `url('${res.avatar}')`
+				closePopup(avatarPopup)
 			})
 			.catch(err => {
 				console.log(err)
 			})
 			.finally(() => {
-				clearValidation(avatarPopup, validationConfig)
-				closePopup(avatarPopup)
 				newAvatarButton.textContent = 'Сохранить'
 			})
 	}

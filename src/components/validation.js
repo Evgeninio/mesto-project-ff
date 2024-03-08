@@ -31,15 +31,15 @@ const isValid = (profileForm, formInput, settings) => {
 	}
 }
 
-const setEventListeners = (profileForm, settings) => {
+const setEventListeners = (formElement, settings) => {
 	const inputList = Array.from(
-		profileForm.querySelectorAll(settings.inputSelector)
+		formElement.querySelectorAll(settings.inputSelector)
 	)
-	const buttonElement = profileForm.querySelector(settings.submitButtonSelector)
+	const buttonElement = formElement.querySelector(settings.submitButtonSelector)
 	toggleButtonState(inputList, buttonElement, settings)
 	inputList.forEach(inputElement => {
 		inputElement.addEventListener('input', () => {
-			isValid(profileForm, inputElement, settings)
+			isValid(formElement, inputElement, settings)
 			toggleButtonState(inputList, buttonElement, settings)
 		})
 	})
@@ -51,7 +51,7 @@ const hasInvalidInput = inputList => {
 	})
 }
 
-const toggleButtonState = (inputList, buttonElement, settings) => {
+export const toggleButtonState = (inputList, buttonElement, settings) => {
 	if (hasInvalidInput(inputList)) {
 		buttonElement.disabled = true
 		buttonElement.classList.add(settings.inactiveButtonClass)
@@ -63,8 +63,8 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
 
 export const enableValidation = settings => {
 	const formList = Array.from(document.querySelectorAll(settings.formSelector))
-	formList.forEach(profileForm => {
-		setEventListeners(profileForm, settings)
+	formList.forEach(formElement => {
+		setEventListeners(formElement, settings)
 	})
 }
 
@@ -73,13 +73,10 @@ export function clearValidation(formContainer, settings) {
 	const inputElements = Array.from(
 		formContainer.querySelectorAll(settings.inputSelector)
 	)
-	const inputList = Array.from(
-		formContainer.querySelectorAll(settings.inputSelector)
-	)
 	const buttonElement = formContainer.querySelector(settings.submitButtonSelector)
 	inputElements.forEach(inputElement => {
 		hideInputError(formContainer, inputElement, settings)
 	})
-	toggleButtonState(inputList, buttonElement, settings)
-	formElement.reset()
+  formElement.reset()
+	toggleButtonState(inputElements, buttonElement, settings)
 }

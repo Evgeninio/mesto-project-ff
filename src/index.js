@@ -22,7 +22,7 @@ import {
 import {
 	handleFormCreate,
 	handleProfileFormSubmit,
-	handleAvatarEdit
+	handleAvatarEdit,
 } from './components/forms.js'
 import './pages/index.css'
 
@@ -64,34 +64,30 @@ profileForm.addEventListener('submit', handleProfileFormSubmit)
 cardForm.addEventListener('submit', handleFormCreate)
 avatarForm.addEventListener('submit', handleAvatarEdit)
 
-allPopups.forEach((popup) => {
+allPopups.forEach(popup => {
 	popup.classList.add('popup_is-animated')
-	popup.addEventListener('mousedown', (evt) => {
-			if (evt.target.classList.contains('popup_opened')) {
-					closePopup(popup)
-			}
-			if (evt.target.classList.contains('popup__close')) {
-				closePopup(popup)
-			}
-			if (evt.currentTarget === evt.target) {
-				closePopup(popup)
-			}
+	popup.addEventListener('mousedown', evt => {
+		if (evt.target.classList.contains('popup__close')) {
+			closePopup(popup)
+		}
+		if (evt.currentTarget === evt.target) {
+			closePopup(popup)
+		}
 	})
 })
 
 enableValidation(validationConfig)
 
 Promise.all([getCards(), getProfile()])
-.then(([cards, profile]) => {
-	cards.forEach(item => {
-		const card = createCard(item, deleteCard, openCard, profile._id)
-		placesList.append(card)
+	.then(([cards, profile]) => {
+		cards.forEach(item => {
+			const card = createCard(item, deleteCard, openCard, profile._id)
+			placesList.append(card)
+		})
+		profileTitle.textContent = profile.name
+		profileDesc.textContent = profile.about
+		profileAvatar.style.backgroundImage = `url('${profile.avatar}')`
 	})
-	profileTitle.textContent = profile.name
-	profileDesc.textContent = profile.about
-	profileAvatar.style.backgroundImage = `url('${profile.avatar}')`
-})
-.catch(err => {
-	console.log(err)
-})
-
+	.catch(err => {
+		console.log(err)
+	})
